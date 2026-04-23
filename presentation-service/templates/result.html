@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Result</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef4ff, #f8fbff);
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 820px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            padding: 36px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .status-badge {
+            padding: 10px 16px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 14px;
+            color: white;
+        }
+
+        .status-approved {
+            background: #16a34a;
+        }
+
+        .status-revision {
+            background: #d97706;
+        }
+
+        .status-incomplete {
+            background: #dc2626;
+        }
+
+        .status-default {
+            background: #6b7280;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #6b7280;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .info-box {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 16px;
+        }
+
+        .label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 6px;
+        }
+
+        .value {
+            font-size: 16px;
+            font-weight: 700;
+            word-break: break-word;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .note-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 24px;
+        }
+
+        .note-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1d4ed8;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            transition: all 0.15s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #111827;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                padding: 24px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            {% set status_class = "status-default" %}
+            {% if record.status == "APPROVED" %}
+                {% set status_class = "status-approved" %}
+            {% elif record.status == "NEEDS REVISION" %}
+                {% set status_class = "status-revision" %}
+            {% elif record.status == "INCOMPLETE" %}
+                {% set status_class = "status-incomplete" %}
+            {% endif %}
+
+            <div class="header">
+                <h1>Submission Result</h1>
+                <div class="status-badge {{ status_class }}">
+                    {{ record.status }}
+                </div>
+            </div>
+
+            <div class="section-title">Event Information</div>
+            <div class="info-grid">
+                <div class="info-box">
+                    <div class="label">Record ID</div>
+                    <div class="value">{{ record.id }}</div>
+                </div>
+
+                <div class="info-box">
+                    <div class="label">Organiser</div>
+                    <div class="value">{{ record.organiser_name }}</div>
+                </div>
+
+                <div class="info-box">
+                    <div class="label">Location</div>
+                    <div class="value">{{ record.location }}</div>
+                </div>
+
+                <div class="info-box">
+                    <div class="label">Date</div>
+                    <div class="value">{{ record.date }}</div>
+                </div>
+
+                <div class="info-box full-width">
+                    <div class="label">Title</div>
+                    <div class="value">{{ record.title }}</div>
+                </div>
+
+                <div class="info-box full-width">
+                    <div class="label">Description</div>
+                    <div class="value">{{ record.description }}</div>
+                </div>
+            </div>
+
+            <div class="section-title">Processing Outcome</div>
+            <div class="info-grid">
+                <div class="info-box">
+                    <div class="label">Category</div>
+                    <div class="value">{{ record.category }}</div>
+                </div>
+
+                <div class="info-box">
+                    <div class="label">Priority</div>
+                    <div class="value">{{ record.priority }}</div>
+                </div>
+            </div>
+
+            <div class="note-box">
+                <div class="note-title">System Note</div>
+                <div>{{ record.note }}</div>
+            </div>
+
+            <div class="action-row">
+                <a href="/" class="btn btn-primary">Submit Another Event</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
